@@ -42,12 +42,30 @@ abstract class Plugin
      */
     protected function check(): bool
     {
-        if (version_compare(get_bloginfo('version'), $this->info()->getRequiredWPVersion(), '<')) {
-            throw new PluginException(sprintf('Plugin Requires version %s of WordPress. Version %s given', $this->info()->getRequiredWPVersion(), get_bloginfo('version')));
+        $currentWPVersion = get_bloginfo('version');
+        $requiredWPVersion = $this->info()->getRequiredWPVersion();
+
+        if (!empty($requiredWPVersion) && version_compare($currentWPVersion, $requiredWPVersion, '<')) {
+            throw new PluginException(
+                sprintf(
+                    'Plugin Requires version %s of WordPress. Version %s given',
+                    $requiredWPVersion,
+                    $currentWPVersion
+                )
+            );
         }
 
-        if (version_compare(PHP_VERSION, $this->info()->getRequiredPHPVersion(), '<')) {
-            throw new PluginException(sprintf('Plugin Requires version %s of PHP. Version %s given', $this->info()->getRequiredPHPVersion(), PHP_VERSION));
+        $currentPHPVersion = PHP_VERSION;
+        $requiredPHPVersion = $this->info()->getRequiredPHPVersion();
+
+        if (!empty($requiredPHPVersion) && version_compare($currentPHPVersion, $requiredPHPVersion, '<')) {
+            throw new PluginException(
+                sprintf(
+                    'Plugin Requires version %s of PHP. Version %s given',
+                    $requiredPHPVersion,
+                    $currentPHPVersion
+                )
+            );
         }
 
         return true;
@@ -65,8 +83,18 @@ abstract class Plugin
         $textDomain = $this->info()->getTextDomain();
         $domainPath = $this->info()->getDomainPath();
 
+        if (empty($textDomain) || empty($domainPath)) {
+            return;
+        }
+
         if (!load_plugin_textdomain($textDomain, false, $domainPath)) {
-            throw new PluginException(sprintf('Textdomain %s file not found in %s.', $textDomain, $domainPath));
+            throw new PluginException(
+                sprintf(
+                    'Textdomain %s file not found in %s.',
+                    $textDomain,
+                    $domainPath
+                )
+            );
         }
     }
 
