@@ -101,7 +101,7 @@ abstract class Plugin
     /**
      * Actavation scripts.
      * 
-     * Have to be loaded by register_activation_hook function on main plugin class.
+     * Have to be loaded by register_activation_hook(__FILE__, [$pluginInstance, 'activate']) on main plugin class.
      * 
      * @since 1.0.0
      */
@@ -112,7 +112,7 @@ abstract class Plugin
     /**
      * Deactavation scripts.
      * 
-     * Have to be loaded by register_deactivation_hook function on main plugin class.
+     * Have to be loaded by register_deactivation_hook(__FILE__, [$pluginInstance, 'deactivate']) on main plugin class.
      * 
      * @since 1.0.0
      */
