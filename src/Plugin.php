@@ -94,10 +94,15 @@ abstract class Plugin
         return true;
     }
 
+    /**
+     * Show error message.
+     * 
+     * @since 1.0.0
+     */
     public function showErrorMessage() {
         ?>
         <div class="error is-dismissible">
-            <p><?php echo $this->error; ?></p>
+            <p><?php echo $this->errorMessage; ?></p>
         </div>
         <?php
     }
