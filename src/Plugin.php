@@ -23,14 +23,27 @@ abstract class Plugin
      */
     private $pluginFilename;
 
+    /**
+     * Error message.
+     * 
+     * @var string Message text.
+     */
+    private $errorMessage;
+
     public function __construct()
     {
-        register_activation_hook( $this->getPluginFilename(), [ $this, 'activate' ]);
-        register_deactivation_hook( $this->getPluginFilename(), [ $this, 'deactivate' ]);
+        register_activation_hook($this->getPluginFilename(), [$this, 'activate']);
+        register_deactivation_hook($this->getPluginFilename(), [$this, 'deactivate']);
 
-        if ($this->check()) {
-            $this->loadTextDomain();
-            $this->load();
+
+        try {
+            if ($this->check()) {
+                $this->loadTextDomain();
+                $this->load();
+            }
+        } catch (PluginException $e) {
+            $this->errorMessage = $e->getMessage();
+            add_action('admin_notices', [$this, 'showErrorMessage']);
         }
     }
 
@@ -79,6 +92,14 @@ abstract class Plugin
         }
 
         return true;
+    }
+
+    public function showErrorMessage() {
+        ?>
+        <div class="error is-dismissible">
+            <p><?php echo $this->error; ?></p>
+        </div>
+        <?php
     }
 
     /**
@@ -151,8 +172,9 @@ abstract class Plugin
      * 
      * @since 1.0.0
      */
-    private function getPluginFilename() : string {
-        if( empty( $this->pluginFilename ) ) {
+    private function getPluginFilename(): string
+    {
+        if (empty($this->pluginFilename)) {
             $calledClass = get_called_class();
             $reflector   = new \ReflectionClass($calledClass);
             $this->pluginFilename = $reflector->getFileName();
