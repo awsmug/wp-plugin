@@ -65,13 +65,16 @@ abstract class Plugin
      */
     protected function check(): bool
     {
+        $pluginName = $this->info()->getName();
+
         $currentWPVersion = get_bloginfo('version');
         $requiredWPVersion = $this->info()->getRequiredWPVersion();
 
         if (!empty($requiredWPVersion) && version_compare($currentWPVersion, $requiredWPVersion, '<')) {
             throw new PluginException(
                 sprintf(
-                    'Plugin Requires version %s of WordPress. Version %s given',
+                    'Plugin "%s" Requires version %s of WordPress. Version %s given',
+                    $pluginName,
                     $requiredWPVersion,
                     $currentWPVersion
                 )
@@ -84,7 +87,8 @@ abstract class Plugin
         if (!empty($requiredPHPVersion) && version_compare($currentPHPVersion, $requiredPHPVersion, '<')) {
             throw new PluginException(
                 sprintf(
-                    'Plugin Requires version %s of PHP. Version %s given',
+                    'Plugin "%s" Requires version %s of PHP. Version %s given',
+                    $pluginName,
                     $requiredPHPVersion,
                     $currentPHPVersion
                 )

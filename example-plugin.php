@@ -3,7 +3,7 @@
  * Plugin Name: Example Plugin
  * Description: Test Plugin for WP Plugin class.
  * Requires PHP: 7.0.0
- * Requires at least: 6.0.0
+ * Requires at least: 6.0
  * Domain Path: /langauges
  * Text Domain: wp-plugin
  */
