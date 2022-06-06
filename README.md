@@ -69,6 +69,8 @@ class ExamplePlugin extends Plugin {
     }
 
     public function deactivate() {
-        // Activation code here
+        // Deactivation code here
     }
 }
+
+new ExamplePlugin();

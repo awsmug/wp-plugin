@@ -12,12 +12,22 @@ abstract class Plugin
     /**
      * Plugin information.
      * 
-     * @var PluginInfo
+     * @var PluginInfo Plugin information object.
      */
     private $info;
 
+    /**
+     * Plugin filename.
+     * 
+     * @var string Plugin filename.
+     */
+    private $pluginFilename;
+
     public function __construct()
     {
+        register_activation_hook( $this->getPluginFilename(), [ $this, 'activate' ]);
+        register_deactivation_hook( $this->getPluginFilename(), [ $this, 'deactivate' ]);
+
         if ($this->check()) {
             $this->loadTextDomain();
             $this->load();
@@ -101,8 +111,6 @@ abstract class Plugin
     /**
      * Actavation scripts.
      * 
-     * Have to be loaded by register_activation_hook(__FILE__, [$pluginInstance, 'activate']) on main plugin class.
-     * 
      * @since 1.0.0
      */
     public function activate()
@@ -111,8 +119,6 @@ abstract class Plugin
 
     /**
      * Deactavation scripts.
-     * 
-     * Have to be loaded by register_deactivation_hook(__FILE__, [$pluginInstance, 'deactivate']) on main plugin class.
      * 
      * @since 1.0.0
      */
@@ -132,12 +138,26 @@ abstract class Plugin
     public function info(): PluginInfo
     {
         if (empty($this->info)) {
-            $calledClass = get_called_class();
-            $reflector   = new \ReflectionClass($calledClass);
-
-            $this->info = new PluginInfo($reflector->getFileName());
+            $this->info = new PluginInfo($this->getPluginFilename());
         }
 
         return $this->info;
+    }
+
+    /**
+     * Get the filename of the called plugin class.
+     * 
+     * @return string Plugin filename.
+     * 
+     * @since 1.0.0
+     */
+    private function getPluginFilename() : string {
+        if( empty( $this->pluginFilename ) ) {
+            $calledClass = get_called_class();
+            $reflector   = new \ReflectionClass($calledClass);
+            $this->pluginFilename = $reflector->getFileName();
+        }
+
+        return $this->pluginFilename;
     }
 }
