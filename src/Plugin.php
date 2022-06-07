@@ -35,7 +35,6 @@ abstract class Plugin
         register_activation_hook($this->getPluginFilename(), [$this, 'activate']);
         register_deactivation_hook($this->getPluginFilename(), [$this, 'deactivate']);
 
-
         try {
             if ($this->check()) {
                 $this->loadTextDomain();
@@ -73,7 +72,7 @@ abstract class Plugin
         if (!empty($requiredWPVersion) && version_compare($currentWPVersion, $requiredWPVersion, '<')) {
             throw new PluginException(
                 sprintf(
-                    'Plugin "%s" Requires version %s of WordPress. Version %s given',
+                    'Plugin "%s" stopped. It requires version %s of WordPress. Version %s given.',
                     $pluginName,
                     $requiredWPVersion,
                     $currentWPVersion
@@ -87,7 +86,7 @@ abstract class Plugin
         if (!empty($requiredPHPVersion) && version_compare($currentPHPVersion, $requiredPHPVersion, '<')) {
             throw new PluginException(
                 sprintf(
-                    'Plugin "%s" Requires version %s of PHP. Version %s given',
+                    'Plugin "%s" stopped. It requires version %s of PHP. Version %s given.',
                     $pluginName,
                     $requiredPHPVersion,
                     $currentPHPVersion
