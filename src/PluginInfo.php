@@ -7,8 +7,9 @@ namespace AWSM\WP_Plugin;
  * 
  * @since 1.0.0
  */
-class PluginInfo {
-     /**
+class PluginInfo
+{
+    /**
      * Plugin file.
      * 
      * @var string
@@ -33,7 +34,7 @@ class PluginInfo {
      * 
      * @since 1.0.0
      */
-    public function __construct( string $pluginFile )
+    public function __construct(string $pluginFile)
     {
         $this->pluginFile = $pluginFile;
         $this->load();
@@ -44,7 +45,7 @@ class PluginInfo {
      * 
      * @since 1.0.0
      */
-    private function load() 
+    private function load()
     {
         $this->pluginData = $this->getPluginData();
     }
@@ -56,7 +57,7 @@ class PluginInfo {
      * 
      * @since 1.0.0
      */
-    public function getName() : string
+    public function getName(): string
     {
         return $this->pluginData['Name'];
     }
@@ -68,7 +69,7 @@ class PluginInfo {
      * 
      * @since 1.0.0
      */
-    public function getTitle() : string
+    public function getTitle(): string
     {
         return $this->pluginData['Title'];
     }
@@ -80,7 +81,7 @@ class PluginInfo {
      * 
      * @since 1.0.0
      */
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return $this->pluginData['Description'];
     }
@@ -92,7 +93,7 @@ class PluginInfo {
      * 
      * @since 1.0.0
      */
-    public function getAuthor() : string
+    public function getAuthor(): string
     {
         return $this->pluginData['Author'];
     }
@@ -104,7 +105,7 @@ class PluginInfo {
      * 
      * @since 1.0.0
      */
-    public function getAuthorURI() : string
+    public function getAuthorURI(): string
     {
         return $this->pluginData['AuthorURI'];
     }
@@ -114,7 +115,7 @@ class PluginInfo {
      * 
      * @since 1.0.0
      */
-    public function getVersion() : string
+    public function getVersion(): string
     {
         return $this->pluginData['Version'];
     }
@@ -126,7 +127,7 @@ class PluginInfo {
      * 
      * @since 1.0.0
      */
-    public function getTextDomain() : string
+    public function getTextDomain(): string
     {
         return $this->pluginData['TextDomain'];
     }
@@ -138,7 +139,7 @@ class PluginInfo {
      * 
      * @since 1.0.0
      */
-    public function getDomainPath() : string
+    public function getDomainPath(): string
     {
         return $this->pluginData['DomainPath'];
     }
@@ -150,9 +151,9 @@ class PluginInfo {
      * 
      * @since 1.0.0
      */
-    public function getTemplatePath() : string
+    public function getTemplatePath(): string
     {
-        return trailingslashit( $this->pluginData['TemplatePath'] );
+        return trailingslashit($this->pluginData['TemplatePath']);
     }
 
     /**
@@ -162,7 +163,7 @@ class PluginInfo {
      * 
      * @since 1.0.0
      */
-    public function getNetwork() : bool
+    public function getNetwork(): bool
     {
         return $this->pluginData['Network'];
     }
@@ -174,7 +175,7 @@ class PluginInfo {
      * 
      * @since 1.0.0
      */
-    public function getRequiredWPVersion() : string
+    public function getRequiredWPVersion(): string
     {
         return $this->pluginData['RequiresWP'];
     }
@@ -186,7 +187,7 @@ class PluginInfo {
      * 
      * @since 1.0.0
      */
-    public function getRequiredPHPVersion() : string
+    public function getRequiredPHPVersion(): string
     {
         return $this->pluginData['RequiresPHP'];
     }
@@ -198,7 +199,7 @@ class PluginInfo {
      * 
      * @since 1.0.0
      */
-    private function getPluginData() 
+    private function getPluginData()
     {
         $defaultHeaders = array(
             'Name'         => 'Plugin Name',
@@ -214,15 +215,15 @@ class PluginInfo {
             'RequiresWP'   => 'Requires at least',
             'RequiresPHP'  => 'Requires PHP'
         );
-     
-        $pluginData = $this->getFileData( $this->pluginFile, $defaultHeaders );
-     
-        $pluginData['Network'] = ( 'true' === strtolower( $pluginData['Network'] ) );
-        unset( $pluginData['_sitewide'] );
-     
+
+        $pluginData = $this->getFileData($this->pluginFile, $defaultHeaders);
+
+        $pluginData['Network'] = ('true' === strtolower($pluginData['Network']));
+        unset($pluginData['_sitewide']);
+
         $pluginData['Title']      = $pluginData['Name'];
         $pluginData['AuthorName'] = $pluginData['Author'];
-     
+
         return $pluginData;
     }
 
@@ -234,29 +235,30 @@ class PluginInfo {
      * 
      * @since 1.0.0
      */
-    private function getFileData( $file, $defaultHeaders ) {
+    private function getFileData($file, $defaultHeaders)
+    {
         // We don't need to write to the file, so just open for reading.
-        $fp = fopen( $file, 'r' );
-     
+        $fp = fopen($file, 'r');
+
         // Pull only the first 8 KB of the file in.
-        $fileData = fread( $fp, 8 * 1024 );
-     
+        $fileData = fread($fp, 8 * 1024);
+
         // PHP will close file handle, but we are good citizens.
-        fclose( $fp );
-     
+        fclose($fp);
+
         // Make sure we catch CR-only line endings.
-        $fileData = str_replace( "\r", "\n", $fileData );
-    
+        $fileData = str_replace("\r", "\n", $fileData);
+
         $allHeaders = $defaultHeaders;
-     
-        foreach ( $allHeaders as $field => $regex ) {
-            if ( preg_match( '/^[ \t\/*#@]*' . preg_quote( $regex, '/' ) . ':(.*)$/mi', $fileData, $match ) && $match[1] ) {
-                $allHeaders[ $field ] = trim( preg_replace( '/\s*(?:\*\/|\?>).*/', '', $match[1] ) );
+
+        foreach ($allHeaders as $field => $regex) {
+            if (preg_match('/^[ \t\/*#@]*' . preg_quote($regex, '/') . ':(.*)$/mi', $fileData, $match) && $match[1]) {
+                $allHeaders[$field] = trim(preg_replace('/\s*(?:\*\/|\?>).*/', '', $match[1]));
             } else {
-                $allHeaders[ $field ] = '';
+                $allHeaders[$field] = '';
             }
         }
-     
+
         return $allHeaders;
     }
 
@@ -267,8 +269,9 @@ class PluginInfo {
      * 
      * @since 1.0.0
      */
-    public function getPath() {
-        return dirname( $this->pluginFile );
+    public function getPath()
+    {
+        return dirname($this->pluginFile);
     }
 
     /**
@@ -280,6 +283,6 @@ class PluginInfo {
      */
     public function getUrl(): string
     {
-        return WP_CONTENT_URL . substr( $this->getPath(), strlen( WP_CONTENT_DIR ), strlen( $this->getPath() ));
+        return plugin_dir_url($this->pluginFile);
     }
 }
