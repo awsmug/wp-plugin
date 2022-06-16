@@ -14,7 +14,7 @@ abstract class Plugin
      * 
      * @var PluginInfo Plugin information object.
      */
-    private $info;
+    private static $info;
 
     /**
      * Plugin filename.
@@ -119,8 +119,8 @@ abstract class Plugin
      */
     private function loadTextDomain()
     {
-        $textDomain = $this->info()->getTextDomain();
-        $domainPath = $this->info()->getDomainPath();
+        $textDomain = self::info()::getTextDomain();
+        $domainPath = self::info()::getDomainPath();
 
         if (empty($textDomain) || empty($domainPath)) {
             return;
@@ -164,13 +164,13 @@ abstract class Plugin
      * 
      * @since 1.0.0
      */
-    public function info(): PluginInfo
+    public static function info(): PluginInfo
     {
-        if (empty($this->info)) {
-            $this->info = new PluginInfo($this->getPluginFilename());
+        if (empty(self::$info)) {
+            self::$info = new PluginInfo(self::getPluginFilename());
         }
 
-        return $this->info;
+        return self::$info;
     }
 
     /**
@@ -180,14 +180,14 @@ abstract class Plugin
      * 
      * @since 1.0.0
      */
-    private function getPluginFilename(): string
+    private static function getPluginFilename(): string
     {
-        if (empty($this->pluginFilename)) {
+        if (empty(self::$pluginFilename)) {
             $calledClass = get_called_class();
             $reflector   = new \ReflectionClass($calledClass);
-            $this->pluginFilename = $reflector->getFileName();
+            self::$pluginFilename = $reflector->getFileName();
         }
 
-        return $this->pluginFilename;
+        return self::$pluginFilename;
     }
 }

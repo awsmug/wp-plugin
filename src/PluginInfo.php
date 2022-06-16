@@ -16,7 +16,7 @@ class PluginInfo
      * 
      * @since 1.0.0
      */
-    private $pluginFile;
+    private static $pluginFile;
 
     /**
      * Plugin data.
@@ -25,7 +25,7 @@ class PluginInfo
      * 
      * @since 1.0.0
      */
-    private $pluginData = [];
+    private static $pluginData = [];
 
     /**
      * Constructor
@@ -36,7 +36,7 @@ class PluginInfo
      */
     public function __construct(string $pluginFile)
     {
-        $this->pluginFile = $pluginFile;
+        self::$pluginFile = $pluginFile;
         $this->load();
     }
 
@@ -47,7 +47,7 @@ class PluginInfo
      */
     private function load()
     {
-        $this->pluginData = $this->getPluginData();
+        self::$pluginData = $this->getPluginData();
     }
 
     /**
@@ -59,7 +59,7 @@ class PluginInfo
      */
     public function getName(): string
     {
-        return $this->pluginData['Name'];
+        return self::$pluginData['Name'];
     }
 
     /**
@@ -71,7 +71,7 @@ class PluginInfo
      */
     public function getTitle(): string
     {
-        return $this->pluginData['Title'];
+        return self::$pluginData['Title'];
     }
 
     /**
@@ -83,7 +83,7 @@ class PluginInfo
      */
     public function getDescription(): string
     {
-        return $this->pluginData['Description'];
+        return self::$pluginData['Description'];
     }
 
     /**
@@ -95,7 +95,7 @@ class PluginInfo
      */
     public function getAuthor(): string
     {
-        return $this->pluginData['Author'];
+        return self::$pluginData['Author'];
     }
 
     /**
@@ -107,7 +107,7 @@ class PluginInfo
      */
     public function getAuthorURI(): string
     {
-        return $this->pluginData['AuthorURI'];
+        return self::$pluginData['AuthorURI'];
     }
 
     /**
@@ -117,7 +117,7 @@ class PluginInfo
      */
     public function getVersion(): string
     {
-        return $this->pluginData['Version'];
+        return self::$pluginData['Version'];
     }
 
     /**
@@ -129,7 +129,7 @@ class PluginInfo
      */
     public function getTextDomain(): string
     {
-        return $this->pluginData['TextDomain'];
+        return self::$pluginData['TextDomain'];
     }
 
     /**
@@ -141,7 +141,7 @@ class PluginInfo
      */
     public function getDomainPath(): string
     {
-        return $this->pluginData['DomainPath'];
+        return self::$pluginData['DomainPath'];
     }
 
     /**
@@ -153,7 +153,7 @@ class PluginInfo
      */
     public function getTemplatePath(): string
     {
-        return trailingslashit($this->pluginData['TemplatePath']);
+        return trailingslashit(self::$pluginData['TemplatePath']);
     }
 
     /**
@@ -165,7 +165,7 @@ class PluginInfo
      */
     public function getNetwork(): bool
     {
-        return $this->pluginData['Network'];
+        return self::$pluginData['Network'];
     }
 
     /**
@@ -177,7 +177,7 @@ class PluginInfo
      */
     public function getRequiredWPVersion(): string
     {
-        return $this->pluginData['RequiresWP'];
+        return self::$pluginData['RequiresWP'];
     }
 
     /**
@@ -189,7 +189,7 @@ class PluginInfo
      */
     public function getRequiredPHPVersion(): string
     {
-        return $this->pluginData['RequiresPHP'];
+        return self::$pluginData['RequiresPHP'];
     }
 
     /**
@@ -269,9 +269,9 @@ class PluginInfo
      * 
      * @since 1.0.0
      */
-    public function getPath()
+    public static function getPath()
     {
-        return dirname($this->pluginFile);
+        return dirname(self::$pluginFile);
     }
 
     /**
@@ -281,8 +281,8 @@ class PluginInfo
      * 
      * @since 1.0.0
      */
-    public function getUrl(): string
+    public static function getUrl(): string
     {
-        return plugin_dir_url($this->pluginFile);
+        return plugin_dir_url(self::$pluginFile);
     }
 }
