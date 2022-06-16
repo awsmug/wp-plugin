@@ -190,4 +190,28 @@ abstract class Plugin
 
         return $this->pluginFilename;
     }
+
+    /**
+     * Get path of plugin.
+     * 
+     * @return string Plugin path.
+     * 
+     * @since 1.0.0
+     */
+    public function path(): string
+    {
+        return dirname( $this->getPluginFilename());
+    }
+
+    /**
+     * Get url of plugin.
+     * 
+     * @return string Plugin url.
+     * 
+     * @since 1.0.0
+     */
+    public function url(): string
+    {
+        return plugin_dir_url( $this->getPluginFilename());
+    }
 }
